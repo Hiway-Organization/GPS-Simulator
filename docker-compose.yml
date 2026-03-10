@@ -6,15 +6,16 @@ services:
     container_name: gps-simulator
     restart: unless-stopped
     environment:
-      - MQTT_BROKER=${MQTT_BROKER:-mqtt.apphiway.io}
+      - MQTT_BROKER=${MQTT_BROKER:-emqx}
       - MQTT_PORT=${MQTT_PORT:-1883}
       - TOPIC=${TOPIC:-location_drivers/hiway}
       - SIMULATION_SPEED=${SIMULATION_SPEED:-1.0}
     command: >
       sh -c "sleep 5 && python routes_demo.py"
     networks:
-      - simulator-network
+      - hiway
 
 networks:
-  simulator-network:
-    driver: bridge
+  hiway:
+    external: true
+    name: mqtt-broker_hiway
